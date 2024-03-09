@@ -19,6 +19,15 @@ export default {
         },
       },
     },
+    fontFamily: {
+      vietnam: ["be-vietnam", "sans-serif"],
+    },
+    fontSize: {
+      xs: "0.75rem",
+      sm: "0.875rem",
+      base: "1rem",
+      xl: "2rem",
+    },
   },
   plugins: [],
 };
