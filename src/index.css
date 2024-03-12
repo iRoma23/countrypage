@@ -5,17 +5,17 @@
 @layer base {
   @font-face {
     font-family: "be-vietnam";
-    src: url(/public/fonts/BeVietnamPro-SemiBold.ttf);
+    src: url(/fonts/BeVietnamPro-SemiBold.ttf);
     font-weight: 600;
   }
   @font-face {
     font-family: "be-vietnam";
-    src: url(/public/fonts/BeVietnamPro-Bold.ttf);
+    src: url(/fonts/BeVietnamPro-Bold.ttf);
     font-weight: 700;
   }
   html {
     font-family: "be-vietnam";
-    src: url(/public/fonts/BeVietnamPro-SemiBold.ttf);
+    src: url(/fonts/BeVietnamPro-SemiBold.ttf);
     font-weight: 600;
   }
 }
