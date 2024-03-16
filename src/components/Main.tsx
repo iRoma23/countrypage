@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Country } from "../types";
+
+import countryService from "../services/countries";
+
 import Button from "./Button";
 import CheckBox from "./CheckBox";
 
 function Main() {
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [unCheckBox, setUnCheckBox] = useState(false);
   const [independentCheckBox, setIndependentCheckBox] = useState(false);
 
@@ -13,10 +20,26 @@ function Main() {
   const handleIndependentCheckBox = () => {
     setIndependentCheckBox(!independentCheckBox);
   };
+
+  useEffect(() => {
+    const fetchCountryList = async () => {
+      setIsLoading(true);
+      try {
+        const data = await countryService.getAll();
+        setIsLoading(false);
+        setCountries(data);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    };
+    void fetchCountryList();
+  }, []);
+
   return (
     <main className="bg-[#1A1B1D]">
       <div className="border-t border-secondary bg-primary px-8">
-        <div className="flex items-center justify-between pb-1 pt-6">
+        <header className="flex items-center justify-between pb-1 pt-6">
           <div className="font-vietnam text-base font-semibold text-gray-base">
             Found 234 countries
           </div>
@@ -26,7 +49,7 @@ function Main() {
               placeholder="Search by Name, Region, Subregion"
             />
           </div>
-        </div>
+        </header>
 
         <section>
           <aside>
@@ -36,8 +59,9 @@ function Main() {
                   Sort by
                 </span>
                 <select className="mt-2 appearance-none rounded-xl border-2 border-secondary bg-primary bg-[url('./assets/Expand_down.svg')] bg-[center_right_1rem] bg-no-repeat py-2 pl-4 text-sm text-white-base">
-                  <option selected>Population</option>
-                  <option>opcion 2</option>
+                  <option value="population">Population</option>
+                  <option value="alphabetical">Alphabetical</option>
+                  <option value="area">Area</option>
                 </select>
               </label>
             </div>
@@ -73,7 +97,13 @@ function Main() {
             </div>
           </aside>
 
-          <div>Tableee</div>
+          <div className="mt-8">
+            {isLoading && <div>Loading...</div>}
+            {countries &&
+              countries.map((country) => (
+                <div key={country.name.common}>{country.name.common}</div>
+              ))}
+          </div>
         </section>
       </div>
     </main>
