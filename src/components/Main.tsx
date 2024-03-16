@@ -26,6 +26,8 @@ function Main() {
       setIsLoading(true);
       try {
         const data = await countryService.getAll();
+        console.log(data);
+
         setIsLoading(false);
         setCountries(data);
       } catch (error) {
@@ -41,7 +43,7 @@ function Main() {
       <div className="border-t border-secondary bg-primary px-8">
         <header className="flex items-center justify-between pb-1 pt-6">
           <div className="font-vietnam text-base font-semibold text-gray-base">
-            Found 234 countries
+            Found {countries.length} countries
           </div>
           <div className="relative">
             <input
@@ -99,10 +101,33 @@ function Main() {
 
           <div className="mt-8">
             {isLoading && <div>Loading...</div>}
-            {countries &&
-              countries.map((country) => (
-                <div key={country.name.common}>{country.name.common}</div>
-              ))}
+            {countries && (
+              <table className="w-[36.25rem]">
+                <thead className="border-b-2 border-secondary">
+                  <tr className=" text-left text-xs font-bold text-gray-base">
+                    <th className="w-[6.5rem] pb-4">Flag</th>
+                    <th className="w-[9.375rem] pb-4">Name</th>
+                    <th className="w-[9.375rem] pb-4">Population</th>
+                    <th className="pb-4">Area (km²)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {countries.map((row, key) => (
+                    <tr key={key} className="text-base text-white-base">
+                      <td className="pb-2 pt-4">
+                        <img
+                          src={row.flags.png}
+                          className="h-10 w-14 rounded-md "
+                        />
+                      </td>
+                      <td className="pb-2 pt-4">{row.name.common}</td>
+                      <td className="pb-2 pt-4">{row.population}</td>
+                      <td className="pb-2 pt-4">{row.area}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </section>
       </div>
