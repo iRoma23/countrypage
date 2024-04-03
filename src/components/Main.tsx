@@ -26,12 +26,10 @@ function Main() {
       setIsLoading(true);
       try {
         const data = await countryService.getAll();
-        console.log(data);
-
-        setIsLoading(false);
         setCountries(data);
       } catch (error) {
         console.log(error);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -39,8 +37,8 @@ function Main() {
   }, []);
 
   return (
-    <main className="bg-[#1A1B1D]">
-      <div className="border-t border-secondary bg-primary px-8">
+    <main className="bg-[#191A1C] pb-[4.75rem]">
+      <div className="border border-secondary bg-primary px-8">
         <header className="flex items-center justify-between pb-1 pt-6">
           <div className="font-vietnam text-base font-semibold text-gray-base">
             Found {countries.length} countries
@@ -99,36 +97,56 @@ function Main() {
             </div>
           </aside>
 
-          <div className="mt-8">
-            {isLoading && <div>Loading...</div>}
-            {countries && (
-              <table className="w-[36.25rem]">
-                <thead className="border-b-2 border-secondary">
-                  <tr className=" text-left text-xs font-bold text-gray-base">
-                    <th className="w-[6.5rem] pb-4">Flag</th>
-                    <th className="w-[9.375rem] pb-4">Name</th>
-                    <th className="w-[9.375rem] pb-4">Population</th>
-                    <th className="pb-4">Area (km²)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {countries.map((row, key) => (
-                    <tr key={key} className="text-base text-white-base">
-                      <td className="pb-2 pt-4">
-                        <img
-                          src={row.flags.png}
-                          className="h-10 w-14 rounded-md "
-                        />
-                      </td>
-                      <td className="pb-2 pt-4">{row.name.common}</td>
-                      <td className="pb-2 pt-4">{row.population}</td>
-                      <td className="pb-2 pt-4">{row.area}</td>
+          <article className="flex justify-center">
+            <div className="mt-8 h-[33.5rem] overflow-auto">
+              {countries && !isLoading && (
+                <table className="border-separate border-spacing-0">
+                  <thead className="bg-current bg-inherit sticky top-0 border-b-2 border-secondary bg-primary">
+                    <tr className="text-left text-xs font-bold text-gray-base">
+                      <th className="min-w-[6.5rem] border-b-2 border-secondary pb-4">
+                        Flag
+                      </th>
+                      <th className="min-w-[9.375rem] border-b-2 border-secondary pb-4">
+                        Name
+                      </th>
+                      <th className="min-w-[9.375rem] border-b-2 border-secondary pb-4">
+                        Population
+                      </th>
+                      <th className="min-w-[10.75rem] border-b-2 border-secondary pb-4">
+                        Area (km²)
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
+                  </thead>
+                  <tbody>
+                    {countries.map((row, index) => (
+                      <tr key={index} className="text-base text-white-base">
+                        <td className="pb-2 pt-4">
+                          <img
+                            src={row.flags.png}
+                            alt={row.flags.alt}
+                            className="h-10 w-14 rounded-md "
+                            loading="lazy"
+                          />
+                        </td>
+                        <td className="pb-2 pt-4">{row.name.common}</td>
+                        <td className="pb-2 pt-4">
+                          {row.population
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </td>
+                        <td className="pb-2 pt-4">
+                          {row.area
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              {isLoading && <div>Loading...</div>}
+            </div>
+          </article>
         </section>
       </div>
     </main>
