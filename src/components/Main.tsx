@@ -98,7 +98,7 @@ function Main() {
           </aside>
 
           <article className="flex justify-center">
-            <div className="mt-8 h-[33.5rem] overflow-auto">
+            <div className="no-scrollbar mt-8 h-[33.5rem] overflow-auto">
               {countries && !isLoading && (
                 <table className="border-separate border-spacing-0">
                   <thead className="bg-current bg-inherit sticky top-0 border-b-2 border-secondary bg-primary">
