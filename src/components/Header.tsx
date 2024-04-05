@@ -19,7 +19,7 @@ function Header() {
     //   <div className="h-[18.75rem] bg-[url('./assets/hero-image-wr.jpg')] bg-top"></div>
     // </header>
 
-    <header className="relative h-60 bg-[#000] pt-11 sm:h-60 sm:pt-11 lg:h-[18.75rem]">
+    <header className="relative -z-10 h-60 bg-[#000] pt-11 sm:h-60 sm:pt-11 lg:h-[18.75rem]">
       <img
         className="absolute left-1/2 top-1/2 translate-x-[-50%]"
         src={logoSVG}

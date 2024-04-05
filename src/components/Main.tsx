@@ -37,9 +37,9 @@ function Main() {
   }, []);
 
   return (
-    <main className="bg-[#191A1C] pb-[4.75rem]">
-      <div className="border border-secondary bg-primary px-8">
-        <header className="flex items-center justify-between pb-1 pt-6">
+    <main className="bg-[#191A1C] pb-[4.75rem] lg:px-6 lg:pb-0 2xl:px-12">
+      <div className="border border-secondary bg-primary px-8 lg:relative lg:-top-[3.75rem] lg:rounded-xl xl:px-12 2xl:px-16">
+        <header className="mb-8 flex items-center justify-between pb-1 pt-6">
           <div className="font-vietnam text-base font-semibold text-gray-base">
             Found {countries.length} countries
           </div>
@@ -51,14 +51,14 @@ function Main() {
           </div>
         </header>
 
-        <section>
-          <aside>
-            <div className="mt-8">
+        <section className="lg:grid lg:grid-cols-4 lg:gap-8">
+          <aside className="lg:col-start-1 lg:col-end-2">
+            <div className="mb-8">
               <label className="flex flex-col">
                 <span className="text-xs font-bold text-gray-base">
                   Sort by
                 </span>
-                <select className="mt-2 appearance-none rounded-xl border-2 border-secondary bg-primary bg-[url('./assets/Expand_down.svg')] bg-[center_right_1rem] bg-no-repeat py-2 pl-4 text-sm text-white-base">
+                <select className="mt-2 max-w-[35.625rem] appearance-none rounded-xl border-2 border-secondary bg-primary bg-[url('./assets/Expand_down.svg')] bg-[center_right_1rem] bg-no-repeat py-2 pl-4 text-sm text-white-base">
                   <option value="population">Population</option>
                   <option value="alphabetical">Alphabetical</option>
                   <option value="area">Area</option>
@@ -66,9 +66,9 @@ function Main() {
               </label>
             </div>
 
-            <div className="mt-8">
+            <div className="mb-8">
               <p className="text-xs font-bold text-gray-base">Region</p>
-              <div className="mt-2 flex gap-4">
+              <div className="mt-2 flex flex-wrap gap-3">
                 <Button isActive={true}>Americas</Button>
                 <Button isActive={false}>Antarctic</Button>
                 <Button isActive={true}>Africa</Button>
@@ -78,7 +78,7 @@ function Main() {
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mb-8">
               <p className="block text-xs font-bold text-gray-base">Status</p>
               <div className="flex flex-col">
                 <CheckBox
@@ -97,11 +97,11 @@ function Main() {
             </div>
           </aside>
 
-          <article className="flex justify-center">
-            <div className="no-scrollbar mt-8 h-[33.5rem] overflow-auto">
+          <article className="flex justify-center lg:col-start-2 lg:col-end-5">
+            <div className="no-scrollbar h-[33.5rem] overflow-auto 2xl:h-[calc(100vh_-_15rem)]">
               {countries && !isLoading && (
                 <table className="border-separate border-spacing-0">
-                  <thead className="bg-current bg-inherit sticky top-0 border-b-2 border-secondary bg-primary">
+                  <thead className="bg-current sticky top-0 border-b-2 border-secondary bg-primary">
                     <tr className="text-left text-xs font-bold text-gray-base">
                       <th className="min-w-[6.5rem] border-b-2 border-secondary pb-4">
                         Flag
@@ -119,7 +119,10 @@ function Main() {
                   </thead>
                   <tbody>
                     {countries.map((row, index) => (
-                      <tr key={index} className="text-base text-white-base">
+                      <tr
+                        key={index}
+                        className="text-base text-white-base hover:bg-secondary"
+                      >
                         <td className="pb-2 pt-4">
                           <img
                             src={row.flags.png}

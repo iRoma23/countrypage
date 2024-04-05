@@ -6,7 +6,7 @@ type Props = {
 
 function CheckBox({ children, isActive, handleCheckBox }: Props) {
   return (
-    <label className="mt-3 flex w-max cursor-pointer items-center text-sm font-bold text-white-base">
+    <label className="mt-3 flex w-fit cursor-pointer items-center text-sm font-bold text-white-base">
       <input
         type="checkbox"
         className={`mr-3 size-6 appearance-none rounded-md border-2 border-gray-base bg-primary bg-center checked:border-blue-base checked:bg-blue-base
