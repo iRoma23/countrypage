@@ -33,3 +33,9 @@ type Tur = {
   official: string;
   common: string;
 };
+
+export enum SortFilter {
+  Alphabetical = "alphabetical",
+  Population = "population",
+  Area = "area",
+}
