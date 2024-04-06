@@ -1,14 +1,32 @@
 import { useEffect, useState } from "react";
-import { Country } from "../types";
+import { Country, SortFilter } from "../types";
 
 import countryService from "../services/countries";
+
+import { capitalizeFirstLetter } from "../utils/stringUtils";
 
 import Button from "./Button";
 import CheckBox from "./CheckBox";
 
+interface SortFilterOptions {
+  value: SortFilter;
+  label: string;
+}
+
+const sortFilterOptions: SortFilterOptions[] = Object.values(SortFilter).map(
+  (v) => ({
+    value: v,
+    label: v.toString(),
+  }),
+);
+
 function Main() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [sortFilter, setSortFilter] = useState<SortFilter>(
+    SortFilter.Alphabetical,
+  );
 
   const [unCheckBox, setUnCheckBox] = useState(false);
   const [independentCheckBox, setIndependentCheckBox] = useState(false);
@@ -36,6 +54,15 @@ function Main() {
     void fetchCountryList();
   }, []);
 
+  const handleChangeFilter = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ): void => {
+    const value = event.target.value;
+    const sortFilterValue = Object.values(SortFilter).find((v) => v === value);
+
+    if (sortFilterValue) setSortFilter(sortFilterValue);
+  };
+
   return (
     <main className="bg-[#191A1C] pb-[4.75rem] lg:px-6 lg:pb-0 2xl:px-12">
       <div className="border border-secondary bg-primary px-8 lg:relative lg:-top-[3.75rem] lg:rounded-xl xl:px-12 2xl:px-16">
@@ -58,10 +85,16 @@ function Main() {
                 <span className="text-xs font-bold text-gray-base">
                   Sort by
                 </span>
-                <select className="mt-2 max-w-[35.625rem] appearance-none rounded-xl border-2 border-secondary bg-primary bg-[url('./assets/Expand_down.svg')] bg-[center_right_1rem] bg-no-repeat py-2 pl-4 text-sm text-white-base">
-                  <option value="population">Population</option>
-                  <option value="alphabetical">Alphabetical</option>
-                  <option value="area">Area</option>
+                <select
+                  className="mt-2 max-w-[35.625rem] appearance-none rounded-xl border-2 border-secondary bg-primary bg-[url('./assets/Expand_down.svg')] bg-[center_right_1rem] bg-no-repeat py-2 pl-4 text-sm text-white-base"
+                  value={sortFilter}
+                  onChange={handleChangeFilter}
+                >
+                  {sortFilterOptions.map((option) => (
+                    <option key={option.label} value={option.value}>
+                      {capitalizeFirstLetter(option.label)}
+                    </option>
+                  ))}
                 </select>
               </label>
             </div>
