@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useActive } from "../hooks/useActive";
 import { Country, SortFilter } from "../types";
 
 import countryService from "../services/countries";
@@ -21,12 +22,21 @@ const sortFilterOptions: SortFilterOptions[] = Object.values(SortFilter).map(
 );
 
 function Main() {
+  const [allCountries, setAllCountries] = useState<Country[]>([]);
   const [countries, setCountries] = useState<Country[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [sortFilter, setSortFilter] = useState<SortFilter>(
-    SortFilter.Alphabetical,
+    SortFilter.Population,
   );
+
+  // Region Filter
+  const [isActiveAmericas, handleToggleAmericas] = useActive(true);
+  const [isActiveAntarctic, handleToggleAntarctic] = useActive(true);
+  const [isActiveAfrica, handleToggleAfrica] = useActive(true);
+  const [isActiveAsia, handleToggleAsia] = useActive(true);
+  const [isActiveEurope, handleToggleEurope] = useActive(true);
+  const [isActiveOceania, handleToggleOceania] = useActive(true);
 
   const [unCheckBox, setUnCheckBox] = useState(false);
   const [independentCheckBox, setIndependentCheckBox] = useState(false);
@@ -44,6 +54,7 @@ function Main() {
       setIsLoading(true);
       try {
         const data = await countryService.getAll();
+        setAllCountries(data);
         setCountries(data);
       } catch (error) {
         console.log(error);
@@ -54,6 +65,31 @@ function Main() {
     void fetchCountryList();
   }, []);
 
+  useEffect(() => {
+    const filteredCountries = allCountries.filter((country) => {
+      let filter = false;
+
+      if (isActiveAmericas) filter = filter || country.region === "Americas";
+      if (isActiveAntarctic) filter = filter || country.region === "Antarctic";
+      if (isActiveAfrica) filter = filter || country.region === "Africa";
+      if (isActiveAsia) filter = filter || country.region === "Asia";
+      if (isActiveEurope) filter = filter || country.region === "Europe";
+      if (isActiveOceania) filter = filter || country.region === "Oceania";
+
+      return filter;
+    });
+
+    setCountries(filteredCountries);
+  }, [
+    isActiveAmericas,
+    isActiveAntarctic,
+    isActiveAfrica,
+    isActiveAsia,
+    isActiveEurope,
+    isActiveOceania,
+    allCountries,
+  ]);
+
   const handleChangeFilter = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ): void => {
@@ -61,6 +97,19 @@ function Main() {
     const sortFilterValue = Object.values(SortFilter).find((v) => v === value);
 
     if (sortFilterValue) setSortFilter(sortFilterValue);
+  };
+
+  const sortCountries = (): Country[] => {
+    const sortedCountries = [...countries].sort((a, b) => {
+      if (sortFilter === SortFilter.Alphabetical)
+        return a.name.common.localeCompare(b.name.common);
+      if (sortFilter === SortFilter.Area) return b.area - a.area;
+      if (sortFilter === SortFilter.Population)
+        return b.population - a.population;
+      return 0;
+    });
+
+    return sortedCountries;
   };
 
   return (
@@ -102,12 +151,39 @@ function Main() {
             <div className="mb-8">
               <p className="text-xs font-bold text-gray-base">Region</p>
               <div className="mt-2 flex flex-wrap gap-3">
-                <Button isActive={true}>Americas</Button>
-                <Button isActive={false}>Antarctic</Button>
-                <Button isActive={true}>Africa</Button>
-                <Button isActive={true}>Asia</Button>
-                <Button isActive={true}>Europe</Button>
-                <Button isActive={false}>Oceania</Button>
+                <Button
+                  isActive={isActiveAmericas}
+                  handleToogle={handleToggleAmericas}
+                >
+                  Americas
+                </Button>
+                <Button
+                  isActive={isActiveAntarctic}
+                  handleToogle={handleToggleAntarctic}
+                >
+                  Antarctic
+                </Button>
+                <Button
+                  isActive={isActiveAfrica}
+                  handleToogle={handleToggleAfrica}
+                >
+                  Africa
+                </Button>
+                <Button isActive={isActiveAsia} handleToogle={handleToggleAsia}>
+                  Asia
+                </Button>
+                <Button
+                  isActive={isActiveEurope}
+                  handleToogle={handleToggleEurope}
+                >
+                  Europe
+                </Button>
+                <Button
+                  isActive={isActiveOceania}
+                  handleToogle={handleToggleOceania}
+                >
+                  Oceania
+                </Button>
               </div>
             </div>
 
@@ -151,7 +227,7 @@ function Main() {
                     </tr>
                   </thead>
                   <tbody>
-                    {countries.map((row, index) => (
+                    {sortCountries().map((row, index) => (
                       <tr
                         key={index}
                         className="text-base text-white-base hover:bg-secondary"
