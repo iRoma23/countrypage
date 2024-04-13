@@ -1,7 +1,7 @@
 import { Country } from "../types";
 
 const url =
-  "https://restcountries.com/v3.1/all?fields=name,flags,area,population,independent,unMember";
+  "https://restcountries.com/v3.1/all?fields=name,flags,area,population,region,independent,unMember";
 
 const getAll = async (): Promise<Country[]> => {
   const response = await fetch(url);
