@@ -113,8 +113,8 @@ function Main() {
   };
 
   return (
-    <main className="bg-[#191A1C] pb-[4.75rem] lg:px-6 lg:pb-0 2xl:px-12">
-      <div className="border border-secondary bg-primary px-8 lg:relative lg:-top-[3.75rem] lg:rounded-xl xl:px-12 2xl:px-16">
+    <main className="bg-[#191A1C] pb-[4.75rem] lg:px-6 lg:pb-0 xl:px-[2.625rem] 2xl:px-12">
+      <div className="border border-secondary bg-primary px-8 lg:relative lg:-top-[3.75rem] lg:rounded-xl 2xl:px-16">
         <header className="mb-8 flex items-center justify-between pb-1 pt-6">
           <div className="font-vietnam text-base font-semibold text-gray-base">
             Found {countries.length} countries
@@ -212,17 +212,20 @@ function Main() {
                 <table className="border-separate border-spacing-0">
                   <thead className="bg-current sticky top-0 border-b-2 border-secondary bg-primary">
                     <tr className="text-left text-xs font-bold text-gray-base">
-                      <th className="min-w-[6.5rem] border-b-2 border-secondary pb-4">
+                      <th className="w-[6.25rem] border-b-2 border-secondary pb-4 lg:w-[7.875rem] xl:w-[6.25rem]">
                         Flag
                       </th>
-                      <th className="min-w-[9.375rem] border-b-2 border-secondary pb-4">
+                      <th className="w-[9.25rem] border-b-2 border-secondary pb-4 lg:w-[11.875rem] xl:w-[12.25rem]">
                         Name
                       </th>
-                      <th className="min-w-[9.375rem] border-b-2 border-secondary pb-4">
+                      <th className="w-[9.25rem] border-b-2 border-secondary pb-4 lg:w-[12.875rem] xl:w-[12.25rem]">
                         Population
                       </th>
-                      <th className="min-w-[10.75rem] border-b-2 border-secondary pb-4">
+                      <th className="w-[11.5rem] border-b-2 border-secondary pb-4 lg:w-[9.875rem] xl:w-[12.25rem]">
                         Area (km²)
+                      </th>
+                      <th className="hidden border-b-2 border-secondary xl:table-cell xl:w-[10.75rem]">
+                        Region
                       </th>
                     </tr>
                   </thead>
@@ -250,6 +253,9 @@ function Main() {
                           {row.area
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </td>
+                        <td className="hidden pb-2 pt-4 xl:table-cell">
+                          {row.region}
                         </td>
                       </tr>
                     ))}
