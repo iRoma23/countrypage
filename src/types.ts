@@ -1,10 +1,11 @@
 export type Country = {
   flags: Flags;
   name: Name;
-  independent: boolean;
+  independent?: boolean;
   unMember: boolean;
   area: number;
   population: number;
+  region: Region;
 };
 
 type Flags = {
@@ -16,23 +17,16 @@ type Flags = {
 type Name = {
   common: string;
   official: string;
-  nativeName: NativeName;
+  nativeName: object;
 };
 
-type NativeName = {
-  ell: Ell;
-  tur: Tur;
-};
-
-type Ell = {
-  official: string;
-  common: string;
-};
-
-type Tur = {
-  official: string;
-  common: string;
-};
+type Region =
+  | "Americas"
+  | "Europe"
+  | "Africa"
+  | "Asia"
+  | "Oceania"
+  | "Antarctic";
 
 export enum SortFilter {
   Alphabetical = "alphabetical",
