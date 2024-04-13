@@ -38,6 +38,7 @@ function Main() {
   const [isActiveEurope, handleToggleEurope] = useActive(true);
   const [isActiveOceania, handleToggleOceania] = useActive(true);
 
+  // Status Filter
   const [unCheckBox, setUnCheckBox] = useState(false);
   const [independentCheckBox, setIndependentCheckBox] = useState(false);
 
@@ -76,18 +77,25 @@ function Main() {
       if (isActiveEurope) filter = filter || country.region === "Europe";
       if (isActiveOceania) filter = filter || country.region === "Oceania";
 
+      const isUn = country.unMember || !unCheckBox;
+      const isIndependent = country.independent || !independentCheckBox;
+
+      filter = filter && isUn && isIndependent;
+
       return filter;
     });
 
     setCountries(filteredCountries);
   }, [
+    allCountries,
     isActiveAmericas,
     isActiveAntarctic,
     isActiveAfrica,
     isActiveAsia,
     isActiveEurope,
     isActiveOceania,
-    allCountries,
+    unCheckBox,
+    independentCheckBox,
   ]);
 
   const handleChangeFilter = (
