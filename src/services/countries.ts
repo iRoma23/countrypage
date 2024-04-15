@@ -1,10 +1,12 @@
-import { Country } from "../types";
+// import { Country } from "../types";
+import { CountryRawData } from "../types";
 
-const url =
-  "https://restcountries.com/v3.1/all?fields=name,flags,area,population,region,subregion,independent,unMember";
+const baseUrl = "https://restcountries.com/v3.1";
+const allCountriesParams =
+  "fields=name,flags,area,population,region,subregion,independent,unMember";
 
-const getAll = async (): Promise<Country[]> => {
-  const response = await fetch(url);
+const getAll = async (): Promise<CountryRawData[]> => {
+  const response = await fetch(`${baseUrl}/all?${allCountriesParams}`);
   if (!response.ok) throw new Error(response.statusText);
   const data = await response.json();
   return data;
