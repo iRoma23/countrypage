@@ -6,8 +6,8 @@ import countryService from "../services/countries";
 
 import { capitalizeFirstLetter } from "../utils/stringUtils";
 
-import Button from "./Button";
-import CheckBox from "./CheckBox";
+import Button from "../components/Button";
+import CheckBox from "../components/CheckBox";
 
 interface SortFilterOptions {
   value: SortFilter;
@@ -21,7 +21,7 @@ const sortFilterOptions: SortFilterOptions[] = Object.values(SortFilter).map(
   }),
 );
 
-function Main() {
+function CountryListPage() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -292,4 +292,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default CountryListPage;
