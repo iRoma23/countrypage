@@ -6,6 +6,7 @@ export type Country = {
   area: number;
   population: number;
   region: Region;
+  subregion: string;
 };
 
 type Flags = {
