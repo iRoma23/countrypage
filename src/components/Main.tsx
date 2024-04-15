@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useActive } from "../hooks/useActive";
 import { Country, SortFilter } from "../types";
 
@@ -22,7 +22,6 @@ const sortFilterOptions: SortFilterOptions[] = Object.values(SortFilter).map(
 );
 
 function Main() {
-  const [allCountries, setAllCountries] = useState<Country[]>([]);
   const [countries, setCountries] = useState<Country[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,20 +41,14 @@ function Main() {
   const [unCheckBox, setUnCheckBox] = useState(false);
   const [independentCheckBox, setIndependentCheckBox] = useState(false);
 
-  const handleUnCheckBox = () => {
-    setUnCheckBox(!unCheckBox);
-  };
-
-  const handleIndependentCheckBox = () => {
-    setIndependentCheckBox(!independentCheckBox);
-  };
+  // Search Filter
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const fetchCountryList = async () => {
       setIsLoading(true);
       try {
         const data = await countryService.getAll();
-        setAllCountries(data);
         setCountries(data);
       } catch (error) {
         console.log(error);
@@ -66,8 +59,8 @@ function Main() {
     void fetchCountryList();
   }, []);
 
-  useEffect(() => {
-    const filteredCountries = allCountries.filter((country) => {
+  const filteredCountries = useMemo(() => {
+    return countries.filter((country) => {
       let filter = false;
 
       if (isActiveAmericas) filter = filter || country.region === "Americas";
@@ -82,12 +75,17 @@ function Main() {
 
       filter = filter && isUn && isIndependent;
 
-      return filter;
-    });
+      if (!query) return filter;
 
-    setCountries(filteredCountries);
+      const isFound =
+        country.name.common.toLowerCase().includes(query.toLowerCase()) ||
+        country.region.toLowerCase().includes(query.toLocaleLowerCase()) ||
+        country.subregion.toLowerCase().includes(query.toLocaleLowerCase());
+
+      return filter && isFound;
+    });
   }, [
-    allCountries,
+    countries,
     isActiveAmericas,
     isActiveAntarctic,
     isActiveAfrica,
@@ -96,19 +94,11 @@ function Main() {
     isActiveOceania,
     unCheckBox,
     independentCheckBox,
+    query,
   ]);
 
-  const handleChangeFilter = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ): void => {
-    const value = event.target.value;
-    const sortFilterValue = Object.values(SortFilter).find((v) => v === value);
-
-    if (sortFilterValue) setSortFilter(sortFilterValue);
-  };
-
   const sortCountries = (): Country[] => {
-    const sortedCountries = [...countries].sort((a, b) => {
+    const sortedCountries = filteredCountries.sort((a, b) => {
       if (sortFilter === SortFilter.Alphabetical)
         return a.name.common.localeCompare(b.name.common);
       if (sortFilter === SortFilter.Area) return b.area - a.area;
@@ -120,17 +110,40 @@ function Main() {
     return sortedCountries;
   };
 
+  const handleChangeFilter = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ): void => {
+    const value = event.target.value;
+    const sortFilterValue = Object.values(SortFilter).find((v) => v === value);
+
+    if (sortFilterValue) setSortFilter(sortFilterValue);
+  };
+
+  const handleUnCheckBox = () => {
+    setUnCheckBox(!unCheckBox);
+  };
+
+  const handleIndependentCheckBox = () => {
+    setIndependentCheckBox(!independentCheckBox);
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setQuery(event.target.value);
+  };
+
   return (
     <main className="bg-[#191A1C] pb-[4.75rem] lg:px-6 lg:pb-0 xl:px-[2.625rem] 2xl:px-12">
       <div className="border border-secondary bg-primary px-8 lg:relative lg:-top-[3.75rem] lg:rounded-xl 2xl:px-16">
         <header className="mb-8 flex items-center justify-between pb-1 pt-6">
           <div className="font-vietnam text-base font-semibold text-gray-base">
-            Found {countries.length} countries
+            Found {filteredCountries.length} countries
           </div>
           <div className="relative">
             <input
               className="h-[2.75rem] w-[21.25rem] rounded-xl bg-secondary bg-[url('./assets/Search.svg')] bg-[0.75rem] bg-no-repeat px-11 py-3 text-sm font-bold text-white-base placeholder-gray-base"
               placeholder="Search by Name, Region, Subregion"
+              onChange={handleSearch}
+              value={query}
             />
           </div>
         </header>
