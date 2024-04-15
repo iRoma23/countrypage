@@ -5,6 +5,7 @@ import { Country, SortFilter } from "../types";
 import countryService from "../services/countries";
 
 import { capitalizeFirstLetter } from "../utils/stringUtils";
+import { parseCountries } from "../utils/helper";
 
 import Button from "../components/Button";
 import CheckBox from "../components/CheckBox";
@@ -49,7 +50,8 @@ function CountryListPage() {
       setIsLoading(true);
       try {
         const data = await countryService.getAll();
-        setCountries(data);
+        const parsedData = parseCountries(data);
+        setCountries(parsedData);
       } catch (error) {
         console.log(error);
       } finally {
