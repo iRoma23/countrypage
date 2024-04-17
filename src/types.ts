@@ -12,6 +12,7 @@ type Region =
   | "Oceania"
   | "Antarctic";
 
+//#region Raw Data
 type FlagsRawData = {
   png: string;
   svg: string;
@@ -38,6 +39,17 @@ export interface CountryRawData extends BaseCountryRawData {
   region: Region;
 }
 
+export interface CountryDetailsRawData extends BaseCountryRawData {
+  currencies: object;
+  capital: string[];
+  languages: object;
+  borders: string[];
+  continents: string[];
+}
+//
+//#endregion
+
+//#region Parsed Data
 type Flags = {
   png: string;
   alt: string;
@@ -61,3 +73,13 @@ export interface Country extends BaseCountry {
   unMember: boolean;
   region: Region;
 }
+
+export interface CountryDetails extends BaseCountry {
+  currencies: string[];
+  capital: string[];
+  languages: string[];
+  borders: string[];
+  continents: string[];
+}
+//
+//#endregion
