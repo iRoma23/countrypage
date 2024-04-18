@@ -37,6 +37,7 @@ export interface CountryRawData extends BaseCountryRawData {
   independent?: boolean;
   unMember: boolean;
   region: Region;
+  cca3: string;
 }
 
 export interface CountryDetailsRawData extends BaseCountryRawData {
@@ -72,6 +73,7 @@ export interface Country extends BaseCountry {
   independent?: boolean;
   unMember: boolean;
   region: Region;
+  cca3: string;
 }
 
 export interface CountryDetails extends BaseCountry {
