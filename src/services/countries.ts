@@ -3,7 +3,7 @@ import { CountryDetailsRawData, CountryRawData } from "../types";
 
 const baseUrl = "https://restcountries.com/v3.1";
 const allCountriesParams =
-  "fields=name,flags,area,population,region,subregion,independent,unMember";
+  "fields=name,flags,area,population,region,subregion,independent,unMember,cca3";
 const countryParams =
   "fields=name,capital,subregion,languages,currencies,continents,borders,population,area,flags";
 
