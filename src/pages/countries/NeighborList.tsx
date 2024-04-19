@@ -13,7 +13,7 @@ export default function NeighborList({ cca3List, countries }: Props) {
   });
 
   return (
-    <div>
+    <div className="flex flex-wrap gap-4">
       {neighbouringCountries.map((country) => {
         return <Neighbor key={country.cca3} country={country} />;
       })}
@@ -24,8 +24,13 @@ export default function NeighborList({ cca3List, countries }: Props) {
 function Neighbor({ country }: { country: Country }) {
   return (
     <div>
-      <img src={country.flags.png} alt={country.flags.alt} />
-      <p>{country.name.common}</p>
+      <img
+        src={country.flags.png}
+        alt={country.flags.alt}
+        loading="lazy"
+        className="mb-2 h-16 w-[5.25rem] rounded-md object-cover"
+      />
+      <p className="text-xs font-bold text-white-base">{country.name.common}</p>
     </div>
   );
 }
