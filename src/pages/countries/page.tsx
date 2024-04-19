@@ -39,8 +39,8 @@ function CountryPage({ countries }: Props) {
   }, []);
 
   return (
-    <main className="bg-[#17181A] pb-20">
-      <article className="border-b border-secondary bg-primary pb-12">
+    <main className="flex justify-center bg-[#17181A] pb-20">
+      <article className="max-w-[45rem] border-b border-secondary bg-primary pb-12 xl:relative xl:-top-[3.75rem] xl:rounded-2xl xl:border">
         {country && (
           <>
             <header className="relative -top-12 mb-10 px-11">
