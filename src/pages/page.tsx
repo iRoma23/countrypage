@@ -1,15 +1,17 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useActive } from "../hooks/useActive";
+import { useNavigate } from "react-router-dom";
 import { Country, SortFilter } from "../types";
 
-import countryService from "../services/countries";
-
 import { capitalizeFirstLetter } from "../utils/stringUtils";
-import { parseCountries } from "../utils/helper";
 
 import Button from "../components/Button";
 import CheckBox from "../components/CheckBox";
 
+interface Props {
+  countries: Country[];
+  isLoading: boolean;
+}
 interface SortFilterOptions {
   value: SortFilter;
   label: string;
@@ -22,10 +24,7 @@ const sortFilterOptions: SortFilterOptions[] = Object.values(SortFilter).map(
   }),
 );
 
-function CountryListPage() {
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
+function CountryListPage({ countries, isLoading }: Props) {
   const [sortFilter, setSortFilter] = useState<SortFilter>(
     SortFilter.Population,
   );
@@ -45,21 +44,7 @@ function CountryListPage() {
   // Search Filter
   const [query, setQuery] = useState("");
 
-  useEffect(() => {
-    const fetchCountryList = async () => {
-      setIsLoading(true);
-      try {
-        const data = await countryService.getAll();
-        const parsedData = parseCountries(data);
-        setCountries(parsedData);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    void fetchCountryList();
-  }, []);
+  const navigate = useNavigate();
 
   const filteredCountries = useMemo(() => {
     return countries.filter((country) => {
@@ -231,7 +216,7 @@ function CountryListPage() {
 
           <article className="flex justify-center lg:col-start-2 lg:col-end-5">
             <div className="no-scrollbar h-[33.5rem] overflow-auto 2xl:h-[calc(100vh_-_15rem)]">
-              {countries && !isLoading && (
+              {countries && (
                 <table className="border-separate border-spacing-0">
                   <thead className="bg-current sticky top-0 border-b-2 border-secondary bg-primary">
                     <tr className="text-left text-xs font-bold text-gray-base">
@@ -256,7 +241,10 @@ function CountryListPage() {
                     {sortCountries().map((row, index) => (
                       <tr
                         key={index}
-                        className="text-base text-white-base hover:bg-secondary"
+                        className="cursor-pointer text-base text-white-base hover:bg-secondary"
+                        onClick={() =>
+                          navigate(`/countries/${row.cca3.toLowerCase()}`)
+                        }
                       >
                         <td className="pb-2 pt-4">
                           <img
