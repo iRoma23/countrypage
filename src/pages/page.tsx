@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useActive } from "../hooks/useActive";
 import { useNavigate } from "react-router-dom";
 import { Country, SortFilter } from "../types";
@@ -46,7 +46,12 @@ function CountryListPage({ countries, isLoading }: Props) {
 
   const navigate = useNavigate();
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const filteredCountries = useMemo(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
     return countries.filter((country) => {
       let filter = false;
 
@@ -215,7 +220,10 @@ function CountryListPage({ countries, isLoading }: Props) {
           </aside>
 
           <article className="flex justify-center lg:col-start-2 lg:col-end-5">
-            <div className="no-scrollbar h-[33.5rem] overflow-auto 2xl:h-[calc(100vh_-_15rem)]">
+            <div
+              ref={scrollRef}
+              className="no-scrollbar h-[33.5rem] overflow-auto 2xl:h-[calc(100vh_-_15rem)]"
+            >
               {countries && (
                 <table className="border-separate border-spacing-0">
                   <thead className="bg-current sticky top-0 border-b-2 border-secondary bg-primary">
