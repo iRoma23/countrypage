@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Country, CountryDetails } from "../../types";
 
 import countryService from "../../services/countries";
@@ -18,16 +19,22 @@ function CountryPage({ countries }: Props) {
   const [country, setCountry] = useState<CountryDetails>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const cca3 = "chn";
+  const { cca3 } = useParams();
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
     const fetchCountry = async () => {
       setIsLoading(true);
       try {
-        const data = await countryService.getByCca3(cca3);
-        const parsedData = parseCountryDetails(data);
-        setCountry(parsedData);
-        console.log(parsedData);
+        if (cca3) {
+          const data = await countryService.getByCca3(cca3);
+          const parsedData = parseCountryDetails(data);
+          setCountry(parsedData);
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -36,11 +43,11 @@ function CountryPage({ countries }: Props) {
     };
 
     void fetchCountry();
-  }, []);
+  }, [cca3]);
 
   return (
     <main className="flex justify-center bg-[#17181A] pb-20">
-      <article className="max-w-[45rem] border-b border-secondary bg-primary pb-12 xl:relative xl:-top-[3.75rem] xl:rounded-2xl xl:border">
+      <article className="w-[40rem] border-b border-secondary bg-primary pb-12 xl:relative xl:-top-[3.75rem] xl:w-[45rem] xl:rounded-2xl xl:border">
         {country && (
           <>
             <header className="relative -top-12 mb-10 px-11">
@@ -49,7 +56,7 @@ function CountryPage({ countries }: Props) {
                   src={country.flags.png}
                   alt={country.flags.alt}
                   loading="lazy"
-                  className="h-[12.25rem] w-[16.375rem] rounded-xl object-cover"
+                  className="h-[12.25rem] w-[16.375rem] rounded-xl object-fill"
                 />
               </div>
               <div className="mb-9 flex flex-col items-center">
