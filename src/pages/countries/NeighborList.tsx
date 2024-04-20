@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Country, CountryDetails } from "../../types";
 
 interface Props {
@@ -23,14 +24,18 @@ export default function NeighborList({ cca3List, countries }: Props) {
 
 function Neighbor({ country }: { country: Country }) {
   return (
-    <div>
-      <img
-        src={country.flags.png}
-        alt={country.flags.alt}
-        loading="lazy"
-        className="mb-2 h-16 w-[5.25rem] rounded-md object-cover"
-      />
-      <p className="text-xs font-bold text-white-base">{country.name.common}</p>
+    <div className="cursor-pointer">
+      <Link to={`/countries/${country.cca3.toLowerCase()}`}>
+        <img
+          src={country.flags.png}
+          alt={country.flags.alt}
+          loading="lazy"
+          className="mb-2 h-16 w-[5.25rem] rounded-md object-cover"
+        />
+        <p className="text-xs font-bold text-white-base">
+          {country.name.common}
+        </p>
+      </Link>
     </div>
   );
 }
