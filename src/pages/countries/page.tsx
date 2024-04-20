@@ -10,6 +10,7 @@ import { arrayToString } from "../../utils/stringUtils";
 
 import NeighborList from "./NeighborList";
 import Row from "./Row";
+import SkeletonCountry from "./SkeletonCountry";
 
 interface Props {
   countries: Country[];
@@ -46,8 +47,9 @@ function CountryPage({ countries }: Props) {
   }, [cca3]);
 
   return (
-    <main className="flex justify-center bg-[#17181A] pb-20">
-      <article className="w-[40rem] border-b border-secondary bg-primary pb-12 xl:relative xl:-top-[3.75rem] xl:w-[45rem] xl:rounded-2xl xl:border">
+    <main className="pb- flex justify-center bg-[#17181A]">
+      <article className="w-[40rem] border-b border-secondary bg-primary pb-12 lg:relative lg:-top-[3.75rem] lg:w-[45rem] lg:rounded-2xl lg:border">
+        {isLoading && <SkeletonCountry />}
         {country && (
           <>
             <header className="relative -top-12 mb-10 px-11">
@@ -113,7 +115,6 @@ function CountryPage({ countries }: Props) {
             </section>
           </>
         )}
-        {isLoading && <div>Loading...</div>}
       </article>
     </main>
   );
