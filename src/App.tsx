@@ -8,7 +8,7 @@ import { parseCountries } from "./utils/helper";
 
 import Header from "./components/Header";
 import CountryListPage from "./pages/page";
-import CountryPage from "./pages/countries/page";
+import CountryPage from "./pages/country/page";
 
 function App() {
   const [countries, setCountries] = useState<Country[]>([]);
