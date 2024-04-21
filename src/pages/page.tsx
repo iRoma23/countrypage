@@ -7,6 +7,7 @@ import { capitalizeFirstLetter } from "../utils/stringUtils";
 
 import Button from "../components/Button";
 import CheckBox from "../components/CheckBox";
+import SkeletonTable from "./SkeletonTable";
 
 interface Props {
   countries: Country[];
@@ -224,6 +225,7 @@ function CountryListPage({ countries, isLoading }: Props) {
               ref={scrollRef}
               className="no-scrollbar h-[33.5rem] overflow-auto 2xl:h-[calc(100vh_-_15rem)]"
             >
+              {isLoading && <SkeletonTable />}
               {countries && (
                 <table className="border-separate border-spacing-0">
                   <thead className="bg-current sticky top-0 border-b-2 border-secondary bg-primary">
@@ -281,7 +283,6 @@ function CountryListPage({ countries, isLoading }: Props) {
                   </tbody>
                 </table>
               )}
-              {isLoading && <div>Loading...</div>}
             </div>
           </article>
         </section>
